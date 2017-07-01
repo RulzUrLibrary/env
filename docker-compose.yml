@@ -1,0 +1,7 @@
+version: '2'
+services:
+  db:
+    container_name: rulzurlibrary_db
+    build:
+      context: .
+      dockerfile: dockerfiles/db
