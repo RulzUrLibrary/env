@@ -4,22 +4,31 @@ GOOS ?= $(shell go env GOOS)
 GOARCH ?= $(shell go env GOARCH)
 
 go_api_path = $(GOPATH)/src/github.com/rulzurlibrary/api
-go_bind_data = $(GOPATH)/src/github.com/jteeuwen/go-bindata
 
-init:  front api
+init: front api app
 
-$(go_bind_data):
-	go get -u github.com/jteeuwen/go-bindata/...
+push:
+	rsync -Lrav -e ssh --exclude=".go" --exclude="backup" . \
+		root@rulz.xyz:/root/rulzurlibrary
 
-api: $(go_bind_data)
-	git clone git@github.com:rulzurlibrary/$(notdir $@) $(@)
+backup.pull:
+	rsync -rav root@rulz.xyz:/root/backup .
+
+backup.push:
+	rsync -rav backup root@rulz.xyz:/root/backup
+
+api:
 	mkdir -p $(dir $(go_api_path))
+	git clone git@github.com:rulzurlibrary/$(notdir $@) $(@)
 	ln -s $(abspath $@) $(go_api_path)
 	cd $(go_api_path) && go get -d ./...
 
 front: api
 	git clone git@github.com:rulzurlibrary/$(notdir $@) $@
 	ln -s $(abspath $@) $(go_api_path)/assets/front
+
+app:
+	git clone git@github.com:rulzurlibrary/$(notdir $@) $@
 
 clean-dist: clean
 	rm -rf $(GOPATH) api front
