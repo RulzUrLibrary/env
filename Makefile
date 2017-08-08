@@ -1,21 +1,31 @@
-.PHONY: clean clean-dist clean-virsh init run
+.PHONY: clean clean-dist clean-virsh init run backup
 
 GOOS ?= $(shell go env GOOS)
 GOARCH ?= $(shell go env GOARCH)
 
 go_api_path = $(GOPATH)/src/github.com/rulzurlibrary/api
+ssh = ssh root@rulz.xyz
+rsync = rsync -av -e ssh --delete
 
 init: front api app
 
+ssh:
+	$(ssh)
+
 push:
-	rsync -Lrav -e ssh --exclude=".go" --exclude="backup" . \
-		root@rulz.xyz:/root/rulzurlibrary
+	$(rsync) --exclude=".go" --exclude="backup" . root@rulz.xyz:/root/rulzurlibrary
+
+backup:
+	$(ssh) "rulzurlibrary/assets/backup.sh"
 
 backup.pull:
-	rsync -rav root@rulz.xyz:/root/backup .
+	$(rsync) root@rulz.xyz:/root/backup .
 
 backup.push:
-	rsync -rav backup root@rulz.xyz:/root/backup
+	$(rsync) backup root@rulz.xyz:/root/
+
+prod: push backup backup.pull
+	$(ssh) "cd rulzurlibrary && assets/setup.prod.sh ../backup/latest"
 
 api:
 	mkdir -p $(dir $(go_api_path))
