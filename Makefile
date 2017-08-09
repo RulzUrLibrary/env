@@ -19,6 +19,8 @@ push:
 backup:
 ifndef NO_BACKUP
 	$(ssh) "rulzurlibrary/assets/backup.sh"
+else
+	@echo "BE CAREFUL, NO BACKUP HAS BEEN MADE!"
 endif
 
 backup.pull:
