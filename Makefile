@@ -13,10 +13,13 @@ ssh:
 	$(ssh)
 
 push:
-	$(rsync) --exclude=".go" --exclude="backup" . root@rulz.xyz:/root/rulzurlibrary
+	$(rsync) --exclude=".go" --exclude="backup" --exclude="app" \
+		. root@rulz.xyz:/root/rulzurlibrary
 
 backup:
+ifndef NO_BACKUP
 	$(ssh) "rulzurlibrary/assets/backup.sh"
+endif
 
 backup.pull:
 	$(rsync) root@rulz.xyz:/root/backup .
