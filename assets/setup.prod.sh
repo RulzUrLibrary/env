@@ -29,7 +29,9 @@ cat > "assets/api.prod.toml" <<- EOF
 EOF
 
 compose build --force-rm --no-cache api
+compose build --force-rm --no-cache captcha
 compose up -d api
+compose up -d captcha
 
 # check if there is a backup passed as parameter
 if [ -d "$1" ] && [ -f "$1/dump.sql" ] && [ -f "$1/thumbs.tgz" ]; then

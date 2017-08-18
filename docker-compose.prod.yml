@@ -7,3 +7,14 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/api
+    volumes:
+      - /var/lib/rulzurlibrary/thumbs
+
+  captcha:
+    container_name: rulzurlibrary_captcha
+    image: rulzurlibrary_api
+    command: ["crond", "-f", "-d", "4"]
+    volumes:
+      - ./assets/captcha.sh:/etc/periodic/hourly/captcha
+    volumes_from:
+      - api
