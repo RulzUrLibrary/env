@@ -13,7 +13,7 @@ ssh:
 	$(ssh)
 
 push:
-	$(rsync) --exclude=".go" --exclude="backup" --exclude="app" \
+	$(rsync) --exclude=".go" --exclude="backup" --exclude="app" --exclude="css" \
 		. root@rulz.xyz:/root/rulzurlibrary
 
 backup:
