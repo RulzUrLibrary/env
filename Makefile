@@ -24,10 +24,12 @@ else
 endif
 
 backup.pull:
-	$(rsync) root@rulz.xyz:/root/backup .
+	$(rsync) root@rulz.xyz:/root/backup/ ./backup/site
+	$(rsync) root@rulz.xyz:/etc/letsencrypt ./backup/
 
 backup.push:
-	$(rsync) backup root@rulz.xyz:/root/
+	$(rsync) backup/site/ root@rulz.xyz:/root/backup
+	$(rsync) ./backup/letsencrypt root@rulz.xyz:/etc/
 
 prod: push backup backup.pull
 	$(ssh) "cd rulzurlibrary && assets/setup.prod.sh ../backup/latest"
