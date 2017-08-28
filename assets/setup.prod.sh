@@ -17,7 +17,6 @@ cat > "assets/api.prod.toml" <<- EOF
 	debug = true
 	dev = false
 	host = "0.0.0.0"
-	port = 8888
 	url = "rulz.xyz"
 
 	[database]
