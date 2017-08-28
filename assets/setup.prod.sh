@@ -38,9 +38,10 @@ if [ -d "$1" ] && [ -f "$1/dump.sql" ] && [ -f "$1/thumbs.tgz" ]; then
 	echo "restoring from backup"
 	cat "$1/dump.sql" | docker exec -i rulzurlibrary_db psql -d rulzurlibrary
 	cat "$1/thumbs.tgz" | docker exec -i rulzurlibrary_api tar -xzf -
-else
-	cat api/assets/sql/init.sql | docker exec -i rulzurlibrary_db psql -U rulzurlibrary
 fi
+
+# this script should create only if not exist, this is a good way to pass db upgrade
+cat api/assets/sql/init.sql | docker exec -i rulzurlibrary_db psql -U rulzurlibrary
 
 docker rmi $(docker images | awk '$1 ~ /\<none\>/ {print $3}')
 docker volume rm $(docker volume ls -qf dangling=true)
