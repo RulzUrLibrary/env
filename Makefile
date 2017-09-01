@@ -21,7 +21,11 @@ ifndef NO_BACKUP
 	$(ssh) "rulzurlibrary/assets/backup.sh"
 else
 	@echo "BE CAREFUL, NO BACKUP HAS BEEN MADE!"
+	@sleep 2
 endif
+
+backup.local:
+	assets/backup.dev.sh
 
 backup.pull:
 	$(rsync) root@rulz.xyz:/root/backup/ ./backup/site
