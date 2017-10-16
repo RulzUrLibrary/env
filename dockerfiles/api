@@ -1,0 +1,22 @@
+FROM alpine:edge
+
+ENV GOPATH /go
+
+WORKDIR $GOPATH
+
+COPY api $GOPATH/src/github.com/rulzurlibrary/api
+COPY api/assets /var/lib/rulzurlibrary
+COPY api/config /etc/rulzurlibrary
+
+WORKDIR $GOPATH/src/github.com/rulzurlibrary/api
+
+RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache -t build-dependencies go git musl-dev \
+	&& go get -d ./... \
+	&& go build -ldflags '-w -s' -o /usr/local/bin/api  \
+	&& rm -rf $GOPATH \
+	&& apk del build-dependencies
+
+WORKDIR /
+ENV RULZURLIBRARY_CONFIG "/etc/rulzurlibrary/api.prod.toml"
+CMD ["/usr/local/bin/api"]

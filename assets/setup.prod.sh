@@ -13,7 +13,7 @@ ALTER USER "rulzurlibrary" WITH PASSWORD '$password';
 EOF
 
 
-cat > "assets/api.prod.toml" <<- EOF
+cat > "api/config/api.prod.toml" <<- EOF
 	debug = true
 	dev = false
 	host = "0.0.0.0"
@@ -25,6 +25,7 @@ cat > "assets/api.prod.toml" <<- EOF
 	host = "rulzurlibrary_db"
 	port = 5432
 	password = "${password}"
+
 EOF
 
 compose build --force-rm --no-cache api
