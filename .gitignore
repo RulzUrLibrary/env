@@ -1,6 +1,6 @@
 .go
-api
-front
-app
-backup
-css
+/api
+/front
+/app
+/backup
+/css
