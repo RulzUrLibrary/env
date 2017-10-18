@@ -1,3 +1,3 @@
 #!/bin/sh
-/usr/local/bin/api captcha
-/usr/local/bin/api clean
+/usr/local/bin/cli captcha
+/usr/local/bin/cli clean

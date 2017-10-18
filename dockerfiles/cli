@@ -1,0 +1,22 @@
+FROM alpine:edge
+
+ENV GOPATH /go
+
+WORKDIR $GOPATH
+
+COPY cli $GOPATH/src/github.com/rulzurlibrary/cli
+COPY api/config /etc/rulzurlibrary
+COPY assets/cron.sh /etc/periodic/hourly/rulzurlibrary
+
+WORKDIR $GOPATH/src/github.com/rulzurlibrary/cli
+
+RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache -t build-dependencies go git musl-dev \
+	&& go get -d ./... \
+	&& go build -ldflags '-w -s' -o /usr/local/bin/cli  \
+	&& rm -rf $GOPATH \
+	&& apk del build-dependencies
+
+WORKDIR /
+ENV RULZURLIBRARY_CONFIG "/etc/rulzurlibrary/api.prod.toml"
+CMD ["crond", "-f", "-d", "4"]

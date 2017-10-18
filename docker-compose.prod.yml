@@ -14,9 +14,8 @@ services:
 
   captcha:
     container_name: rulzurlibrary_captcha
-    image: rulzurlibrary_api
-    command: ["crond", "-f", "-d", "4"]
-    volumes:
-      - ./assets/cron.sh:/etc/periodic/hourly/rulzurlibrary
+    build:
+      context: .
+      dockerfile: dockerfiles/cli
     volumes_from:
       - api
