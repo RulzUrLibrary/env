@@ -4,11 +4,11 @@ ENV GOPATH /go
 
 WORKDIR $GOPATH
 
-COPY cli $GOPATH/src/github.com/rulzurlibrary/cli
+COPY cli $GOPATH/src/github.com/RulzUrLibrary/cli
 COPY api/config /etc/rulzurlibrary
 COPY assets/cron.sh /etc/periodic/hourly/rulzurlibrary
 
-WORKDIR $GOPATH/src/github.com/rulzurlibrary/cli
+WORKDIR $GOPATH/src/github.com/RulzUrLibrary/cli
 
 RUN apk add --no-cache ca-certificates
 RUN apk add --no-cache -t build-dependencies go git musl-dev \
