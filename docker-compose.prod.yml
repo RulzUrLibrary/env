@@ -10,7 +10,7 @@ services:
       dockerfile: dockerfiles/api
     volumes:
       - /var/lib/rulzurlibrary/thumbs
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ../cache:/var/lib/rulzurlibrary/cache
 
   captcha:
     container_name: rulzurlibrary_captcha

@@ -29,11 +29,11 @@ backup.local:
 
 backup.pull:
 	$(rsync) root@rulz.xyz:/root/backup/ ./backup/site
-	$(rsync) root@rulz.xyz:/etc/letsencrypt ./backup/
+	$(rsync) root@rulz.xyz:/root/cache/ ./backup/letsencrypt
 
 backup.push:
 	$(rsync) backup/site/ root@rulz.xyz:/root/backup
-	$(rsync) ./backup/letsencrypt root@rulz.xyz:/etc/
+	$(rsync) ./backup/letsencrypt/ root@rulz.xyz:/root/cache
 
 prod: push backup backup.pull
 	$(ssh) "cd rulzurlibrary && assets/setup.prod.sh ../backup/latest"
