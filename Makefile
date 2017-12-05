@@ -14,6 +14,7 @@ ssh:
 
 push:
 	$(rsync) --exclude=".go" --exclude="/backup" --exclude="/app" --exclude="/css" \
+		--exclude="misc" \
 		. root@rulz.xyz:/root/rulzurlibrary
 
 backup:
